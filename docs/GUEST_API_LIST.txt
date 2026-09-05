@@ -1,0 +1,52 @@
+Mkash Travel — GuestAPI Operations
+Base URL: https://apitravel.afonestop.com/GuestAPI.asmx
+
+GENERAL / SHARED
+1. GetProductAccess
+2. GetCountry
+
+FLIGHTS
+3. FlightAirportAutocomplete
+4. GetOnewayList
+5. GetRoundwayList
+6. GetMultiwayList
+7. GetBookingdetails
+8. SaveBooking
+
+BUS
+9. Bus1_CityList
+10. Bus1_List
+11. Bus2_SelecSeat
+
+CAR RENTAL
+12. Car1_List
+13. Car2_SelecCar
+14. Car_Booking
+
+HOTELS
+15. HotelGetCitiesAutocomplete
+16. Hotel1_List
+17. Hotel2_HotelDetails
+18. Hotel3_RoomDetails
+19. Hotel4_Booking
+
+BOOKING HISTORY
+20. BookingCardListGet
+21. BookingCardViewGet
+
+TOURS & ACTIVITIES
+22. TourGetList
+23. TourGetDetails
+
+AUTH
+24. SignupTraveller(TravellerId, UDTitleID, UDFirstName, UDMiddName, UDLastName, UDDOB, GenderId, UDEMailID, UDUserName, UDPassword, StreetAddress, City, State, PostCode, UDMobile_No)
+25. TravellerPhoneEmail(PhoneEmail)                — LOGIN lookup + OTP send only
+26. TravellerPhoneEmailSignup(PhoneEmail, Name)     — SIGNUP lookup + OTP send (client requirement: use this, not TravellerPhoneEmail, inside the signup flow)
+27. TravellerLogin(Username, Password)
+28. TravellerDashboard(UserTypeId, UserId)
+29. UserOTPCheck(otp)
+30. TravellerUserValidation(Type, Value)            — Type: Email | Phone | Username. NOT "UserValidation".
+
+WALLET
+31. TransactionReport(UserId, UserTypeId, FromDate, ToDate)      — wallet statement, FromDate/ToDate as dd/MM/yyyy
+32. BookingDebit(UserId, UserTypeId, BookFlightId, DebitAmount)  — debit wallet for a booking, DebitAmount is decimal

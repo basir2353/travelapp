@@ -1,0 +1,1281 @@
+/* @import url() FONT IMPORTS MUST ALWAYS BE AT THE VERY TOP OF THIS FILE, ABOVE THE TAILWIND IMPORTS — DO NOT DELETE THIS COMMENT */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Sans+Ethiopic:wght@400;500;600;700&display=swap');
+
+/* CRITICAL: THE FOLLOWING TAILWIND IMPORTS MUST NEVER BE DELETED OR REORDERED — DO NOT DELETE THIS COMMENT */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* END TAILWIND IMPORTS — ALL OTHER CSS MUST GO BELOW THIS LINE */
+
+/* Mkash Horizon V3 — teal / cyan / sunset design system */
+:root {
+  --background: 40 33% 97%;
+  --foreground: 24 10% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 24 10% 10%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 24 10% 10%;
+  --primary: 173 80% 32%;
+  --primary-foreground: 0 0% 100%;
+  --primary-light: 166 76% 92%;
+  --primary-dark: 175 77% 26%;
+  --secondary: 40 20% 96%;
+  --secondary-foreground: 25 5% 45%;
+  --muted: 40 20% 96%;
+  --muted-foreground: 25 5% 45%;
+  --accent: 166 76% 92%;
+  --accent-foreground: 173 80% 32%;
+  --destructive: 347 77% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 30 6% 90%;
+  --input: 30 6% 90%;
+  --ring: 173 80% 32%;
+  --radius: 1.125rem;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  --app-height: 100%;
+}
+
+body {
+  background-color: hsl(var(--background));
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'DM Sans', 'Plus Jakarta Sans', 'Inter', 'Noto Sans Ethiopic', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: hsl(var(--foreground));
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.no-scrollbar::-webkit-scrollbar,
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar,
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*
+ * Safe areas — prefer Capacitor SystemBars CSS vars (density-correct on Android),
+ * then env() for iOS / WebViews that already expose safe-area-inset-*.
+ * Do NOT max(env, var): on Android 15 Cap may pad the WebView natively and set
+ * --safe-area-inset-* to 0; max() with env() would double the top gap.
+ */
+:root {
+  --sat: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --sar: var(--safe-area-inset-right, env(safe-area-inset-right, 0px));
+  --sab: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+  --sal: var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
+  /* Compact in-flow tab bar — sheets must sit above this (z-sheet) or pad with pb-above-tabbar */
+  --tabbar-h: 56px;
+  /* Fallback when OS reports 0 but 3-button / gesture nav still overlaps (common on some Android WebViews). */
+  --sab-fallback: 4px;
+  --sab-pad: max(var(--sab), var(--sab-fallback));
+}
+
+.pb-safe {
+  padding-bottom: max(8px, var(--sab-pad)) !important;
+}
+.pb-cta-safe {
+  padding-bottom: max(0.75rem, var(--sab-pad)) !important;
+}
+html[data-keyboard-open] .pb-cta-safe {
+  padding-bottom: max(0.5rem, var(--sab-pad)) !important;
+}
+.pb-nav-safe {
+  /* Keypads / chrome that already have spacing — only clear system nav */
+  padding-bottom: var(--sab-pad) !important;
+}
+.pt-safe {
+  padding-top: max(0px, var(--sat));
+}
+.pb-sheet-safe {
+  padding-bottom: max(8px, var(--sab-pad)) !important;
+}
+.pb-above-tabbar {
+  padding-bottom: calc(16px + var(--tabbar-h) + var(--sab-pad));
+}
+.z-sheet {
+  z-index: 70;
+}
+
+@layer components {
+  /* Glass primitives */
+  .glass {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-color: rgba(255, 255, 255, 0.45);
+    @apply backdrop-blur-glass border shadow-glass;
+  }
+  .glass-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(240, 253, 250, 0.82) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.06), 0 4px 20px rgba(13, 148, 136, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(170%);
+    -webkit-backdrop-filter: blur(20px) saturate(170%);
+    @apply rounded-ios-lg;
+  }
+  .glass-card-elevated {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(236, 253, 245, 0.85) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.08), 0 12px 40px rgba(13, 148, 136, 0.14), 0 4px 12px rgba(249, 115, 22, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    @apply rounded-ios-lg;
+  }
+  .glass-search-panel {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.97) 0%, rgba(240, 253, 250, 0.82) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    box-shadow:
+      0 0 0 1px rgba(13, 148, 136, 0.1),
+      0 16px 48px rgba(13, 148, 136, 0.14),
+      0 4px 12px rgba(249, 115, 22, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+  }
+  .glass-stepper-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.65) 100%);
+    border: 1px solid rgba(13, 148, 136, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    color: hsl(var(--primary));
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .glass-stepper-btn:not(:disabled):active {
+    transform: scale(0.92);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+  .glass-stepper-btn-plus:not(:disabled) {
+    background: linear-gradient(180deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 4px 14px rgba(13, 148, 136, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  .glass-passenger-panel {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(204, 251, 241, 0.5) 100%);
+    border: 1px solid rgba(13, 148, 136, 0.14);
+    border-radius: 14px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(14px);
+  }
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.72);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+  .glass-sheet {
+    background-color: rgba(255, 255, 255, 0.82);
+    border-color: rgba(255, 255, 255, 0.45);
+    @apply backdrop-blur-glass-lg border-t shadow-ios-lg;
+  }
+  .glass-input {
+    background-color: rgba(255, 255, 255, 0.55);
+    border-color: rgba(255, 255, 255, 0.5);
+    @apply backdrop-blur-md border shadow-ios-xs;
+  }
+  .glass-muted {
+    background-color: rgba(255, 255, 255, 0.45);
+    border-color: rgba(255, 255, 255, 0.35);
+    @apply backdrop-blur-md border;
+  }
+  .glass-overlay {
+    background-color: rgba(0, 0, 0, 0.2);
+    @apply backdrop-blur-md;
+  }
+  .glass-pill {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.4);
+    @apply backdrop-blur-md border;
+  }
+  .glass-btn-ghost {
+    background-color: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
+    @apply backdrop-blur-md border active:scale-95 transition-all duration-ios;
+  }
+  .glass-btn-ghost:hover {
+    background-color: rgba(255, 255, 255, 0.55);
+  }
+  .glass-field {
+    background: rgba(255, 255, 255, 0.38);
+    border: 1px solid rgba(13, 148, 136, 0.14);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 1px 4px rgba(0, 0, 0, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    @apply transition-all duration-ios;
+  }
+  .glass-field:hover {
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(13, 148, 136, 0.22);
+  }
+  .glass-field-active {
+    background-color: hsl(var(--accent) / 0.75);
+    border-color: hsl(var(--primary) / 0.25);
+    @apply backdrop-blur-md border ring-2 ring-primary/15;
+  }
+  .glass-chip {
+    background-color: rgba(255, 255, 255, 0.55);
+    border-color: rgba(255, 255, 255, 0.45);
+    @apply backdrop-blur-md border rounded-full transition-all duration-ios;
+  }
+  .glass-chip-active {
+    @apply bg-primary text-primary-foreground border-primary/30 shadow-ios-glow;
+  }
+  .glass-icon-wrap {
+    background-color: hsl(var(--accent) / 0.85);
+    @apply backdrop-blur-sm rounded-full flex items-center justify-center;
+  }
+  .glass-alert-error {
+    background-color: rgba(254, 226, 226, 0.75);
+    border-color: rgba(252, 165, 165, 0.5);
+    @apply backdrop-blur-md border rounded-ios-lg;
+  }
+  .glass-alert-warning {
+    background-color: rgba(254, 243, 199, 0.75);
+    border-color: rgba(252, 211, 77, 0.5);
+    @apply backdrop-blur-md border rounded-ios-lg;
+  }
+  .glass-alert-info {
+    background-color: rgba(219, 234, 254, 0.75);
+    border-color: rgba(147, 197, 253, 0.5);
+    @apply backdrop-blur-md border rounded-ios-lg;
+  }
+  .glass-alert-success {
+    background-color: hsl(var(--accent) / 0.8);
+    border-color: hsl(var(--primary) / 0.2);
+    @apply backdrop-blur-md border rounded-ios-lg;
+  }
+  .glass-pricing {
+    background-color: rgba(255, 255, 255, 0.65);
+    border-color: rgba(255, 255, 255, 0.48);
+    @apply backdrop-blur-glass border shadow-ios-sm rounded-ios-lg transition-all duration-ios;
+  }
+  .glass-pricing-active {
+    background-color: hsl(var(--accent) / 0.85);
+    border-color: hsl(var(--primary) / 0.35);
+    @apply ring-2 ring-primary/20 shadow-ios-md;
+  }
+  .glass-doc-row {
+    background-color: rgba(255, 255, 255, 0.68);
+    border-color: rgba(255, 255, 255, 0.5);
+    @apply backdrop-blur-md border rounded-ios-md transition-all duration-ios;
+  }
+  .glass-doc-row-active {
+    background-color: hsl(var(--accent) / 0.9);
+    border-color: hsl(var(--primary) / 0.35);
+    @apply ring-1 ring-primary/20;
+  }
+  .glass-footer {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.4);
+    @apply backdrop-blur-glass-lg border-t;
+  }
+  .glass-hero {
+    @apply relative overflow-hidden;
+    background: linear-gradient(135deg, hsl(var(--accent) / 0.95) 0%, rgba(255,255,255,0.4) 50%, hsl(220 60% 96% / 0.6) 100%);
+  }
+  .glass-screen {
+    @apply flex flex-col h-full bg-transparent relative overflow-hidden min-w-0;
+  }
+  .glass-funnel-input {
+    @apply w-full h-10 px-3 rounded-ios-md glass-input text-[13px] text-foreground outline-none transition-all duration-ios;
+  }
+  .glass-funnel-input:focus {
+    background-color: rgba(255, 255, 255, 0.72);
+    @apply ring-4 ring-primary/10 border-primary/25;
+  }
+
+  /* shadcn/ui-style components with glass */
+  .ui-card {
+    @apply glass-card transition-all duration-ios ease-ios;
+  }
+  .ui-card-elevated {
+    @apply glass-card-elevated;
+  }
+  .ui-input {
+    @apply w-full h-[52px] px-4 rounded-ios-md glass-input text-[15px] text-foreground placeholder:text-muted-foreground transition-all duration-ios ease-ios;
+  }
+  .ui-input:focus {
+    background-color: rgba(255, 255, 255, 0.7);
+    @apply border-primary/30 shadow-ios-sm outline-none ring-4 ring-primary/10;
+  }
+  .ui-btn-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
+    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    @apply w-full h-12 rounded-ios-md font-semibold text-[15px] text-primary-foreground transition-all duration-ios ease-ios hover:opacity-95 active:scale-[0.98] disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none disabled:cursor-not-allowed;
+  }
+  .ui-segmented {
+    background: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(13, 148, 136, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+    backdrop-filter: blur(12px);
+    @apply flex gap-1 p-1 rounded-ios;
+  }
+  .ui-segmented-item {
+    @apply flex-1 min-h-[44px] h-11 rounded-[10px] text-[13px] font-semibold transition-all duration-ios text-muted-foreground touch-manipulation;
+  }
+  .ui-segmented-item-active {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(13, 148, 136, 0.12);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.12), inset 0 1px 0 rgba(255, 255, 255, 1);
+    @apply text-primary;
+  }
+  .ui-list {
+    @apply glass-card overflow-hidden;
+  }
+  .ui-list-row {
+    @apply w-full flex items-center gap-4 p-4 transition-colors duration-ios;
+  }
+  .ui-list-row:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+  .ui-list-row:active {
+    background-color: rgba(255, 255, 255, 0.55);
+  }
+  .ui-empty-icon {
+    @apply w-20 h-20 rounded-full glass-muted flex items-center justify-center shadow-ios-xs;
+  }
+  .skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.4) 100%);
+    background-size: 200% 100%;
+    @apply animate-skeleton rounded-ios;
+  }
+  .shimmer-block {
+    background: linear-gradient(
+      90deg,
+      #e8edf2 0%,
+      #e8edf2 35%,
+      #f4f7fa 50%,
+      #e8edf2 65%,
+      #e8edf2 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+  .ui-topbar {
+    @apply w-full h-14 flex items-center px-4 relative z-40 shrink-0;
+  }
+  .ui-topbar:not(.ui-topbar-book) {
+    @apply glass-panel border-b border-teal-100/70 shadow-horizon;
+  }
+  .ui-topbar.ui-topbar-book {
+    background: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  /* iOS only: fold safe-area into TopBar and keep the row compact (Android unchanged). */
+  html[data-platform='ios'] .ui-topbar.ui-topbar-book {
+    height: auto;
+    min-height: 2.75rem;
+    padding-top: var(--sat);
+    padding-bottom: 0.125rem;
+  }
+  .ui-travel-ambient {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .ui-funnel-header {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  /* iOS only: clear Dynamic Island so funnel back/title are tappable (Android unchanged). */
+  html[data-platform='ios'] .ui-funnel-header {
+    padding-top: calc(0.5rem + var(--sat)) !important;
+    padding-bottom: 0.5rem;
+    position: relative;
+    z-index: 40;
+  }
+  html[data-platform='ios'] .ui-funnel-header > button {
+    position: relative;
+    z-index: 41;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  html[data-platform='ios'] .ethio-funnel-scroll {
+    padding-bottom: max(1.25rem, var(--sab-pad));
+  }
+  html[data-platform='ios'] .ethio-funnel-alt-header {
+    padding-top: calc(1rem + var(--sat)) !important;
+  }
+  html[data-platform='ios'] .ethio-funnel-toast {
+    padding-top: calc(0.75rem + var(--sat)) !important;
+  }
+  html[data-platform='ios'] .ui-sticky-footer {
+    padding-bottom: max(0.75rem, var(--sab-pad)) !important;
+  }
+  html[data-platform='ios'] .pb-safe {
+    padding-bottom: max(12px, var(--sab-pad)) !important;
+  }
+  /* Non-book topbars (if any) also clear the status bar on iOS */
+  html[data-platform='ios'] .ui-topbar:not(.ui-topbar-book) {
+    height: auto;
+    min-height: 3.5rem;
+    padding-top: var(--sat);
+  }
+  /* In-flow tab bar — clear Android/iOS system navigation */
+  .ui-tabbar {
+    @apply glass-panel flex items-stretch justify-between px-1 pt-1 shrink-0 relative z-50;
+    padding-bottom: max(8px, var(--sab-pad));
+    touch-action: manipulation;
+  }
+  .ui-tabbar button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Single horizontal row (Flight → Holiday → Bus), scrollable — not wrapped */
+  .ui-chip-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .ui-chip-row::-webkit-scrollbar {
+    display: none;
+  }
+  .ui-chip-row .ui-chip {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Horizontal deal / destination carousels (touch-friendly pan) */
+  .ui-h-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .ui-h-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .ui-h-scroll > * {
+    flex-shrink: 0;
+    touch-action: manipulation;
+  }
+  .ui-field-box {
+    @apply rounded-2xl border border-teal-200/50 bg-white/55 backdrop-blur-md shadow-sm min-w-0 w-full text-left;
+  }
+  .ui-field-icon {
+    @apply w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0;
+  }
+  .ui-field-label {
+    @apply text-[11px] sm:text-[12px] font-bold uppercase tracking-wide text-gray-500;
+  }
+  .ui-field-value {
+    @apply text-[14px] sm:text-[15px] font-semibold truncate text-gray-900;
+  }
+  .ui-field-value-empty {
+    @apply text-gray-400 font-medium;
+  }
+  .ui-stepper-btn {
+    @apply w-10 h-10 min-w-[40px] min-h-[40px] rounded-full flex items-center justify-center shrink-0 active:scale-90 transition-transform touch-manipulation;
+  }
+
+  /* Site-wide UX patterns */
+  .ui-page {
+    @apply flex-1 overflow-y-auto no-scrollbar px-5 pb-scroll-safe;
+  }
+  .ui-page-padded {
+    @apply px-5;
+  }
+  .ui-section {
+    @apply mb-6;
+  }
+  .ui-section-header {
+    @apply flex items-center justify-between px-5 mb-3 min-h-[44px];
+  }
+  .ui-section-title {
+    @apply text-[17px] font-bold text-foreground leading-tight;
+  }
+  .ui-section-action {
+    @apply text-[13px] font-semibold text-primary min-h-[44px] min-w-[44px] flex items-center justify-end active:opacity-70 touch-manipulation;
+  }
+  .ui-btn-secondary {
+    @apply w-full h-12 rounded-ios-md font-semibold text-[15px] border border-border bg-white/80 text-foreground transition-all duration-ios ease-ios hover:bg-white active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation;
+  }
+  .ui-sticky-footer {
+    @apply shrink-0 px-5 pt-2 border-t glass-footer w-full;
+    padding-bottom: max(4px, var(--sab-pad));
+  }
+  .ui-touch {
+    @apply min-h-[44px] min-w-[44px] touch-manipulation;
+  }
+  .ui-chip {
+    @apply shrink-0 flex items-center gap-1.5 h-10 min-h-[40px] px-3.5 rounded-full text-[13px] font-semibold transition-all duration-200 touch-manipulation;
+  }
+  .ui-chip-active {
+    @apply bg-primary text-primary-foreground shadow-lg shadow-primary/25;
+  }
+  .ui-chip-inactive {
+    @apply bg-white/60 backdrop-blur border border-white/70 text-gray-600 active:scale-[0.98];
+  }
+  .pb-scroll-safe {
+    padding-bottom: 16px;
+  }
+  .pb-footer-safe {
+    /* Room for sticky funnel footer only — screens must not also add pb-24. */
+    padding-bottom: calc(56px + var(--sab-pad));
+  }
+
+  /* User-friendly readability & guidance */
+  .ui-subtitle {
+    @apply text-[14px] text-muted-foreground leading-relaxed;
+  }
+  .ui-hint {
+    @apply text-[12px] text-muted-foreground leading-snug;
+  }
+  .ui-card-intro {
+    @apply mb-3;
+  }
+  .ui-card-intro-title {
+    @apply text-[18px] font-bold text-foreground leading-tight;
+  }
+  .ui-card-intro-desc {
+    @apply text-[13px] text-muted-foreground mt-0.5 leading-relaxed;
+  }
+  .ui-form-label {
+    @apply text-[12px] font-bold text-gray-600 mb-1.5 block leading-normal overflow-visible;
+  }
+  .ui-form-label .req {
+    @apply text-red-500 font-bold ml-0.5;
+  }
+  .ui-form-hint {
+    @apply text-[11px] text-gray-400 mt-1 leading-snug;
+  }
+  .ui-pin-dot {
+    @apply w-4 h-4 rounded-full transition-colors duration-200;
+  }
+  .ui-pin-dot-filled {
+    @apply bg-primary shadow-[0_2px_8px_rgba(13,148,136,0.35)];
+  }
+  .ui-pin-dot-empty {
+    @apply bg-gray-200;
+  }
+  .ui-footer-hint {
+    @apply text-[11px] text-muted-foreground text-center mt-0.5 leading-snug px-2;
+  }
+  .ui-empty-title {
+    @apply text-[18px] font-bold text-foreground mb-2;
+  }
+  .ui-empty-desc {
+    @apply text-[14px] text-muted-foreground mb-6 max-w-[280px] leading-relaxed;
+  }
+  .glass-funnel-input::placeholder {
+    color: hsl(var(--muted-foreground) / 0.85);
+    font-size: 13px;
+  }
+}
+
+/* Horizon V3 ambient background — warm sand + teal sky */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.ui-app-bg {
+  background-color: #faf7f2;
+  background-image:
+    radial-gradient(ellipse 100% 80% at 0% 0%, rgba(13, 148, 136, 0.22) 0%, transparent 52%),
+    radial-gradient(ellipse 80% 60% at 100% 8%, rgba(249, 115, 22, 0.14) 0%, transparent 48%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(20, 184, 166, 0.14) 0%, transparent 52%),
+    linear-gradient(180deg, #f5f0e8 0%, #faf7f2 45%, #f0ebe3 100%);
+  min-width: 0;
+  max-width: 100%;
+}
+
+html,
+body,
+#root {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.glass-card,
+.glass-card-elevated,
+.glass-search-panel,
+.ui-field-box {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ui-sticky-footer {
+  min-width: 0;
+  padding-bottom: max(4px, var(--sab-pad));
+}
+
+.ui-sticky-footer button {
+  height: auto !important;
+  min-height: 48px;
+  max-width: 100%;
+  white-space: normal;
+  line-height: 1.25;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.ui-topbar h1 {
+  padding-left: 3.25rem;
+  padding-right: 3.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 390px) {
+  .px-\[18px\] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  .-mx-\[18px\] {
+    margin-left: -12px !important;
+    margin-right: -12px !important;
+  }
+}
+
+[data-sonner-toaster] [data-sonner-toast] {
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(28, 25, 23, 0.08) !important;
+  box-shadow: 0 12px 32px rgba(28, 25, 23, 0.1) !important;
+}
+
+/* Simple error toast — white card, no red fill */
+[data-sonner-toaster] [data-sonner-toast].travel-error-toast,
+[data-sonner-toaster] [data-sonner-toast][data-type='error'] {
+  background: #ffffff !important;
+  border: 1px solid rgba(28, 25, 23, 0.1) !important;
+  box-shadow: 0 14px 36px rgba(28, 25, 23, 0.12) !important;
+  color: #1c1917 !important;
+  padding-left: 16px !important;
+  padding-right: 40px !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast].travel-error-toast [data-title],
+[data-sonner-toaster] [data-sonner-toast][data-type='error'] [data-title] {
+  color: #1c1917 !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast].travel-error-toast [data-description],
+[data-sonner-toaster] [data-sonner-toast][data-type='error'] [data-description] {
+  color: #78716c !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast].travel-error-toast [data-icon],
+[data-sonner-toaster] [data-sonner-toast][data-type='error'] [data-icon] {
+  color: #0d9488 !important;
+  background: rgba(13, 148, 136, 0.1) !important;
+  border-radius: 999px !important;
+  width: 28px !important;
+  height: 28px !important;
+  margin-right: 4px !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast].travel-error-toast [data-close-button],
+[data-sonner-toaster] [data-sonner-toast][data-type='error'] [data-close-button] {
+  background: #f5f5f4 !important;
+  border: 1px solid rgba(28, 25, 23, 0.08) !important;
+  color: #78716c !important;
+  left: auto !important;
+  right: 10px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+:focus-visible {
+  outline: 2px solid hsl(var(--ring) / 0.45);
+  outline-offset: 2px;
+}
+
+/* Login / welcome: compact layout on short phones (keyboard or small height). */
+.login-screen-header {
+  padding-top: max(0.5rem, var(--sat));
+  padding-bottom: 0.5rem;
+}
+
+.login-screen-scroll {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: max(0.75rem, var(--sab-pad));
+  -webkit-overflow-scrolling: touch;
+}
+
+.login-screen-body {
+  width: 100%;
+  min-width: 0;
+  /* Keep labels clear of the mode tabs above */
+  padding-top: 0.125rem;
+}
+
+.login-fields > * {
+  overflow: visible;
+}
+
+@media (max-height: 720px) {
+  .login-hero {
+    padding-bottom: 0.25rem !important;
+  }
+  .login-hero h1 {
+    font-size: 1.125rem !important;
+  }
+  .login-hero .login-hero-sub {
+    display: none;
+  }
+  .welcome-illustration {
+    transform: scale(0.92);
+    transform-origin: center center;
+  }
+}
+
+@media (max-height: 560px) {
+  /* Only hide hero on very short viewports — keep labels readable above 560px */
+  .login-hero {
+    display: none;
+  }
+  .welcome-illustration {
+    transform: scale(0.82);
+  }
+}
+
+/* Keyboard open: compact form, scroll naturally (no flex-end clipping). */
+html[data-keyboard-open] .login-screen-header {
+  padding-top: max(0.25rem, var(--sat));
+  padding-bottom: 0.25rem;
+}
+
+html[data-keyboard-open] .login-screen-scroll {
+  padding-bottom: 0.5rem;
+}
+
+html[data-keyboard-open] .login-hero {
+  display: none;
+}
+
+html[data-keyboard-open] .login-fields {
+  gap: 0.85rem;
+}
+
+html[data-keyboard-open] .login-actions {
+  padding-top: 0.75rem;
+  padding-bottom: 0.35rem;
+}
+
+html[data-keyboard-open] .login-actions .login-secondary-cta {
+  height: 2.25rem;
+}
+
+html[data-keyboard-open] .login-screen .ui-form-label {
+  margin-bottom: 0.35rem;
+  line-height: 1.35;
+  padding-top: 0.1rem;
+}
+
+/* Auth v2 — onboarding, login, signup */
+.auth-screen {
+  @apply flex flex-col h-full min-h-0 relative overflow-hidden bg-white;
+}
+
+.auth-backdrop-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(48px);
+  opacity: 0.55;
+}
+
+.auth-backdrop-blob-a {
+  width: 220px;
+  height: 220px;
+  top: -40px;
+  right: -30px;
+  background: rgba(167, 243, 208, 0.45);
+}
+
+.auth-backdrop-blob-b {
+  width: 180px;
+  height: 180px;
+  bottom: 28%;
+  left: -40px;
+  background: rgba(251, 207, 232, 0.35);
+}
+
+.auth-backdrop-blob-c {
+  width: 140px;
+  height: 140px;
+  top: 38%;
+  right: 10%;
+  background: rgba(186, 230, 253, 0.3);
+}
+
+.auth-bottom-sheet-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 9999px;
+  background: rgba(148, 163, 184, 0.55);
+}
+
+.auth-icon-btn {
+  @apply w-10 h-10 rounded-full flex items-center justify-center shrink-0;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+.auth-outline-btn {
+  @apply h-12 rounded-2xl text-[14px] font-semibold text-[#0D9488] transition-all active:scale-[0.98];
+  background: rgba(255, 255, 255, 0.85);
+  border: 1.5px solid rgba(13, 148, 136, 0.25);
+}
+
+.auth-outline-btn:active {
+  background: rgba(13, 148, 136, 0.06);
+}
+
+.auth-segmented {
+  @apply rounded-2xl;
+  background: rgba(241, 245, 249, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.auth-step-bar {
+  @apply h-1 flex-1 rounded-full transition-all duration-300;
+  background: rgba(148, 163, 184, 0.25);
+}
+
+.auth-step-bar-active {
+  background: linear-gradient(90deg, #1a3d42, #E85D4C);
+  box-shadow: 0 0 8px rgba(26, 61, 66, 0.25);
+}
+
+.auth-choice-hero .relative {
+  transform: scale(0.88);
+  transform-origin: center center;
+}
+
+@media (max-height: 680px) {
+  .auth-choice-hero {
+    max-height: 34vh !important;
+  }
+  .auth-bottom-sheet {
+    padding-top: 1rem;
+  }
+}
+
+/* --- KTA Onboarding orbit (shared on every slide) --- */
+.onboard-screen {
+  --orbit-outer-size: clamp(232px, 70vw, 272px);
+  --orbit-inner-gap: 44px;
+  --orbit-radius: calc(var(--orbit-outer-size) / 2 - 2px);
+}
+
+.onboard-header {
+  padding-top: max(0.75rem, var(--sat));
+}
+
+.onboard-orbit-frame {
+  --orbit-outer-size: clamp(232px, 70vw, 272px);
+  --orbit-inner-gap: 44px;
+  --orbit-radius: calc(var(--orbit-outer-size) / 2 - 2px);
+  background:
+    radial-gradient(ellipse 90% 70% at 18% 12%, rgba(255, 228, 220, 0.72) 0%, transparent 58%),
+    radial-gradient(ellipse 85% 65% at 88% 92%, rgba(210, 245, 245, 0.75) 0%, transparent 55%),
+    linear-gradient(155deg, #fff8f6 0%, #ffffff 42%, #f4fbfb 100%);
+}
+
+.onboard-orbit-assembly {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--orbit-outer-size);
+  height: var(--orbit-outer-size);
+  margin-left: calc(var(--orbit-outer-size) / -2);
+  margin-top: calc(var(--orbit-outer-size) / -2);
+}
+
+.onboard-orbit-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--orbit-outer-size) * 0.52);
+  height: calc(var(--orbit-outer-size) * 0.52);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.72);
+  filter: blur(28px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.onboard-orbit-hub,
+.onboard-orbit-spinner,
+.onboard-orbit-content {
+  position: absolute;
+  inset: 0;
+}
+
+.onboard-orbit-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(148, 163, 184, 0.36);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.onboard-orbit-ring-outer {
+  width: 100%;
+  height: 100%;
+}
+
+.onboard-orbit-ring-inner {
+  width: calc(100% - var(--orbit-inner-gap));
+  height: calc(100% - var(--orbit-inner-gap));
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+.onboard-orbit-spinner {
+  transform-origin: center center;
+}
+
+.onboard-orbit-content {
+  pointer-events: none;
+}
+
+.onboard-center-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 108px;
+  height: 108px;
+  border-radius: 28px;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 16px 48px rgba(15, 23, 42, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.onboard-currency-pill {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, calc(var(--orbit-outer-size) / 2 - 14px));
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.onboard-orbit-icon-pill {
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.onboard-cta-gradient {
+  background: linear-gradient(90deg, #0B1320 0%, #1a3d42 45%, #E85D4C 100%);
+  box-shadow: 0 8px 24px rgba(11, 19, 32, 0.28);
+}
+
+/* Signup v2 — horizontal currency strip (nested inside vertical scroll) */
+.signup-v2-currency-scroll {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.signup-v2-currency-scroll::-webkit-scrollbar {
+  display: none;
+}
+.signup-v2-currency-track {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  width: max-content;
+  min-width: min(100%, max-content);
+  padding-right: 0.25rem;
+  vertical-align: top;
+}
+
+/* KTA auth — login & signup */
+.kta-auth-backdrop {
+  z-index: 0;
+}
+
+.kta-auth-header {
+  /* Content inset only — safe area applied once (not stacked with MobileFrame). */
+  padding-top: calc(0.75rem + var(--sat));
+}
+
+.kta-auth-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(64px);
+  opacity: 0.55;
+}
+
+.kta-auth-blob-a {
+  width: 220px;
+  height: 220px;
+  top: -30px;
+  right: -50px;
+  background: rgba(167, 243, 208, 0.5);
+}
+
+.kta-auth-blob-b {
+  width: 200px;
+  height: 200px;
+  top: 60px;
+  left: -60px;
+  background: rgba(254, 205, 211, 0.4);
+}
+
+.kta-auth-icon-btn {
+  @apply w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-[#0B1320];
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.98);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+}
+
+.kta-auth-logo-mark {
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+}
+
+.kta-segmented {
+  background: rgba(241, 245, 249, 0.98);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-radius: 16px;
+  padding: 4px;
+}
+
+.kta-segment-tab-active svg {
+  color: #ffffff;
+}
+
+.kta-info-box {
+  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.75);
+}
+
+.kta-gradient-btn {
+  background: linear-gradient(90deg, #1a3d42 0%, #2a5559 42%, #c96b62 100%);
+  box-shadow: 0 8px 24px rgba(26, 61, 66, 0.28);
+}
+
+.kta-biometric-btn {
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+}
+
+.kta-social-btn {
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.kta-social-btn:active {
+  background: rgba(248, 250, 252, 1);
+}
+
+.kta-step-active {
+  background: linear-gradient(90deg, #1a3d42, #E85D4C);
+}
+
+/* PIN unlock — matches signup / sign-in auth theme */
+.kta-pin-screen {
+  background: #ffffff;
+}
+
+.kta-pin-avatar-ring {
+  background: linear-gradient(135deg, #1a3d42 0%, #2a5559 45%, #c96b62 100%);
+  padding: 2px;
+  box-shadow: 0 8px 20px rgba(26, 61, 66, 0.14);
+}
+
+.kta-pin-slot {
+  width: 42px;
+  height: 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(248, 250, 252, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.kta-pin-slot-filled {
+  border-color: rgba(26, 61, 66, 0.28);
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgba(26, 61, 66, 0.08);
+}
+
+.kta-pin-slot-error {
+  border-color: rgba(239, 68, 68, 0.55);
+  background: rgba(254, 242, 242, 0.9);
+}
+
+.kta-pin-slot-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #1a3d42, #c96b62);
+  box-shadow: 0 2px 6px rgba(26, 61, 66, 0.25);
+}
+
+.kta-pin-slot-dot-error {
+  background: #ef4444;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.35);
+}
+
+.kta-pin-key {
+  background: rgba(248, 250, 252, 0.98);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+  font-family: 'Plus Jakarta Sans', 'DM Sans', system-ui, sans-serif;
+}
+
+.kta-pin-key:active {
+  background: rgba(241, 245, 249, 1);
+}
+
+.kta-pin-key-ghost {
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.kta-pin-key-ghost:active {
+  background: rgba(248, 250, 252, 0.95);
+}
+
+.kta-pin-title {
+  color: #0b1320;
+}
+
+.kta-pin-name {
+  background: linear-gradient(90deg, #1a3d42 0%, #c96b62 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.onboard-hero-frame {
+  min-height: 220px;
+}
+
+@media (max-height: 720px) {
+  .onboard-hero-slot {
+    margin-bottom: 1.25rem;
+  }
+  .onboard-orbit-frame,
+  .onboard-hero-frame {
+    max-height: 38vh;
+  }
+  .onboard-orbit-frame {
+    --orbit-outer-size: clamp(204px, 64vw, 244px);
+    --orbit-inner-gap: 38px;
+  }
+  .onboard-center-logo {
+    width: 96px;
+    height: 96px;
+    border-radius: 24px;
+  }
+  .onboard-title {
+    font-size: 1.625rem !important;
+  }
+  .onboard-body {
+    font-size: 0.875rem !important;
+  }
+  .onboard-dots {
+    margin-bottom: 1.25rem;
+  }
+}

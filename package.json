@@ -1,0 +1,46 @@
+{
+  "name": "mkash-travel",
+  "version": "1.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "cap:sync": "npm run build && npx cap sync android",
+    "cap:open": "npx cap open android",
+    "cap:run": "npm run cap:sync && npx cap run android",
+    "cap:apk": "npm run cap:sync && cd android && JAVA_HOME=\"${JAVA_HOME:-$(/usr/libexec/java_home -v 21 2>/dev/null || echo /usr/local/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home)}\" bash gradlew assembleDebug",
+    "cap:release": "npm run cap:sync && cd android && JAVA_HOME=\"${JAVA_HOME:-$(/usr/libexec/java_home -v 21 2>/dev/null || echo /usr/local/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home)}\" bash gradlew bundleRelease assembleRelease",
+    "e2e:oneway-booking": "node scripts/e2e-oneway-save-booking.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/app": "^8.1.0",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/ios": "^8.5.0",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.2",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.5.4",
+    "jspdf": "^4.2.1",
+    "lucide-react": "0.522.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "sonner": "^2.0.1",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "latest",
+    "postcss": "latest",
+    "tailwindcss": "3.4.17",
+    "typescript": "^5.5.4",
+    "vite": "^5.2.0"
+  }
+}
